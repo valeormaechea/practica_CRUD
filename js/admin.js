@@ -7,7 +7,13 @@ let descripcion = document.getElementById("descripcion");
 let imagen = document.getElementById("imagen");
 let genero = document.getElementById("genero");
 let formulario = document.getElementById("formSerie");
-let listaSeries = [];
+const modalAdminSerie = new bootstrap.Modal(
+  document.getElementById("modalSerie")
+);
+console.log(modalAdminSerie);
+
+// Si hay algo en LocalStorage, traer esos datos. Si no hay nada, listaSeries tiene que ser una []
+let listaSeries = JSON.parse(localStorage.getItem("listaSeriesKey")) || [];
 
 // Agregar validaciones
 
@@ -28,8 +34,29 @@ function crearSerie(e) {
   console.log(listaSeries);
   // Limpiar el formulario
   limpiarFormulario();
+  // Guardar la lista de series
+  guardarListaSeries();
+  // Cerrar modal que administra series
 }
 
 function limpiarFormulario() {
   formulario.reset();
 }
+
+function guardarListaSeries() {
+  localStorage.setItem("listaSeriesKey", JSON.stringify(listaSeries));
+}
+
+/*
+// Notacion literal de objetos
+let nombre = {
+  nombre: "asdasd",
+  apellido: "asdasdad",
+};
+
+// Notacion Json
+persona = {
+  nombre: "asdasd",
+  apellido: "asdadasd",
+};
+*/
