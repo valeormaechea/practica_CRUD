@@ -10,7 +10,7 @@ let formulario = document.getElementById("formSerie");
 const modalAdminSerie = new bootstrap.Modal(
   document.getElementById("modalSerie")
 );
-console.log(modalAdminSerie);
+let btnCrearSerie = document.getElementById("btnCrearSerie");
 
 // Si hay algo en LocalStorage, traer esos datos. Si no hay nada, listaSeries tiene que ser una []
 let listaSeries = JSON.parse(localStorage.getItem("listaSeriesKey")) || [];
@@ -18,6 +18,10 @@ let listaSeries = JSON.parse(localStorage.getItem("listaSeriesKey")) || [];
 // Agregar validaciones
 
 formulario.addEventListener("submit", crearSerie);
+btnCrearSerie.addEventListener("click", () => {
+  limpiarFormulario();
+  modalAdminSerie.show();
+});
 
 function crearSerie(e) {
   e.preventDefault();
@@ -37,6 +41,13 @@ function crearSerie(e) {
   // Guardar la lista de series
   guardarListaSeries();
   // Cerrar modal que administra series
+  modalAdminSerie.hide();
+  // Mostrar cartel al usuario
+  Swal.fire(
+    'Serie creada', // Titulo
+    'La serie cargada se creó correctamente',
+    'success' // Icono. Podria poner una imagen tambien
+  )
 }
 
 function limpiarFormulario() {
