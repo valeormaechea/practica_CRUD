@@ -44,10 +44,10 @@ function crearSerie(e) {
   modalAdminSerie.hide();
   // Mostrar cartel al usuario
   Swal.fire(
-    'Serie creada', // Titulo
-    'La serie cargada se creó correctamente',
-    'success' // Icono. Podria poner una imagen tambien
-  )
+    "Serie creada", // Titulo
+    "La serie cargada se creó correctamente",
+    "success" // Icono. Podria poner una imagen tambien
+  );
 }
 
 function limpiarFormulario() {
