@@ -23,6 +23,8 @@ btnCrearSerie.addEventListener("click", () => {
   modalAdminSerie.show();
 });
 
+cargaInicial();
+
 function crearSerie(e) {
   e.preventDefault();
   // Volver a validar todos los campos y si son correctos, crear la serie
