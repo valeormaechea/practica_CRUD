@@ -58,6 +58,43 @@ function guardarListaSeries() {
   localStorage.setItem("listaSeriesKey", JSON.stringify(listaSeries));
 }
 
+function cargaInicial() {
+  // Se encarga de ver si el arreglo tiene datos para dibujar la tabla
+  if (listaSeries.length > 0) {
+    // Dibujar la tabla
+    listaSeries.forEach((itemSerie) => {
+      crearFila(itemSerie);
+    }); // La palabra inventada del parametro representa cada uno de los elementos del array
+  }
+}
+
+function crearFila(itemSerie) {
+  let tablaSeries = document.querySelector("#listaSeries");
+  tablaSeries.innerHTML += `<tr>
+  <th scope="row">${itemSerie.codigo}</th>
+  <td>${itemSerie.titulo}</td>
+  <td>
+    <p>
+      ${itemSerie.descripcion}
+    </p>
+  </td>
+  <td>
+    <p>
+      ${itemSerie.imagen}
+    </p>
+  </td>
+  <td>${itemSerie.genero}</td>
+  <td>
+    <button class="btn btn-warning btn-sm">
+      <i class="bi bi-pencil-square"></i>
+    </button>
+    <button class="btn btn-danger btn-sm">
+      <i class="bi bi-trash3-fill"></i>
+    </button>
+  </td>
+</tr>`;
+}
+
 /*
 // Notacion literal de objetos
 let nombre = {
