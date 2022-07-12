@@ -1,4 +1,5 @@
 import { Serie } from "./serieClass.js";
+import { campoRequerido } from "./validaciones.js";
 
 // Traemos los elementos del formulario
 let codigo = document.getElementById("codigo");
@@ -16,6 +17,7 @@ let btnCrearSerie = document.getElementById("btnCrearSerie");
 let listaSeries = JSON.parse(localStorage.getItem("listaSeriesKey")) || [];
 
 // Agregar validaciones
+codigo.addEventListener("onload", () => {});
 
 formulario.addEventListener("submit", crearSerie);
 btnCrearSerie.addEventListener("click", () => {
