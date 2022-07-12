@@ -1,5 +1,5 @@
 import { Serie } from "./serieClass.js";
-import { campoRequerido } from "./validaciones.js";
+import { campoRequerido, cantidadCaracteres } from "./validaciones.js";
 
 // Traemos los elementos del formulario
 let codigo = document.getElementById("codigo");
@@ -15,9 +15,23 @@ let btnCrearSerie = document.getElementById("btnCrearSerie");
 
 // Si hay algo en LocalStorage, traer esos datos. Si no hay nada, listaSeries tiene que ser una []
 let listaSeries = JSON.parse(localStorage.getItem("listaSeriesKey")) || [];
+let codigos = JSON.parse(localStorage.getItem("listaCodigos")) || [];
 
 // Agregar validaciones
-codigo.addEventListener("onload", () => {});
+btnCrearSerie.addEventListener("click", () => {
+  codigo.value = codigoAleatorio();
+  codigo.ariaPlaceholder = codigo.value;
+  console.log(codigo.value);
+});
+titulo.addEventListener("blur", () => {
+  campoRequerido(titulo);
+});
+titulo.addEventListener("change", () => {
+  cantidadCaracteres(2, 20, titulo);
+});
+descripcion.addEventListener("blur", () => {
+  cantidadCaracteres(10, 200, descripcion);
+});
 
 formulario.addEventListener("submit", crearSerie);
 btnCrearSerie.addEventListener("click", () => {
@@ -42,6 +56,8 @@ function crearSerie(e) {
   limpiarFormulario();
   // Guardar la lista de series
   guardarListaSeries();
+  // Guardar la lista de series
+  guardarListaCodigos();
   // Cerrar modal que administra series
   modalAdminSerie.hide();
   // Mostrar cartel al usuario
@@ -60,6 +76,10 @@ function guardarListaSeries() {
   localStorage.setItem("listaSeriesKey", JSON.stringify(listaSeries));
 }
 
+function guardarListaCodigos() {
+  localStorage.setItem("listaCodigos", JSON.stringify(codigos));
+}
+
 /*
 // Notacion literal de objetos
 let nombre = {
@@ -73,3 +93,19 @@ persona = {
   apellido: "asdadasd",
 };
 */
+
+function codigoAleatorio() {
+  let numero = Math.round(Math.random() * (99999999 - 10000000) + 10000000);
+
+  //Con numeros mas pequeños: mas chances para probar el else y la no repetición
+  //let numero = Math.round(Math.random() * (1000 - 100) + 100);
+
+  if (codigos.indexOf(numero) === -1) {
+    codigos.push(numero);
+    //console.log(codigos);
+    return numero;
+  } else {
+    console.log("hola");
+    codigoAleatorio();
+  }
+}
