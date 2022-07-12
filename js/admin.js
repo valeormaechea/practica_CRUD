@@ -17,7 +17,6 @@ let btnCrearSerie = document.getElementById("btnCrearSerie");
 let listaSeries = JSON.parse(localStorage.getItem("listaSeriesKey")) || [];
 
 // Agregar validaciones
-codigo.addEventListener("onload", () => {});
 
 formulario.addEventListener("submit", crearSerie);
 btnCrearSerie.addEventListener("click", () => {
