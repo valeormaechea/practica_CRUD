@@ -1,5 +1,9 @@
 import { Serie } from "./serieClass.js";
-import { campoRequerido, cantidadCaracteres } from "./validaciones.js";
+import {
+  campoRequerido,
+  cantidadCaracteres,
+  validarUrl,
+} from "./validaciones.js";
 
 // Traemos los elementos del formulario
 let codigo = document.getElementById("codigo");
@@ -19,18 +23,23 @@ let codigos = JSON.parse(localStorage.getItem("listaCodigos")) || [];
 
 // Agregar validaciones
 btnCrearSerie.addEventListener("click", () => {
-  codigo.value = codigoAleatorio();
-  codigo.ariaPlaceholder = codigo.value;
-  console.log(codigo.value);
+  codigo.placeholder = codigoAleatorio();
 });
+
 titulo.addEventListener("blur", () => {
   campoRequerido(titulo);
 });
+
 titulo.addEventListener("change", () => {
   cantidadCaracteres(2, 20, titulo);
 });
+
 descripcion.addEventListener("blur", () => {
   cantidadCaracteres(10, 200, descripcion);
+});
+
+imagen.addEventListener("blur", () => {
+  validarUrl(imagen, 1, 0);
 });
 
 formulario.addEventListener("submit", crearSerie);
@@ -45,12 +54,14 @@ function crearSerie(e) {
   e.preventDefault();
   // Volver a validar todos los campos y si son correctos, crear la serie
   let nuevaSerie = new Serie(
-    codigo.value,
+    (codigo.value = codigo.placeholder),
     titulo.value,
     descripcion.value,
     imagen.value,
     genero.value
   );
+  console.log(`codigo ${codigo.value}`);
+  codigos.push(codigo.value);
   // Agregamos la serie al final del arreglo
   listaSeries.push(nuevaSerie);
   console.log(listaSeries);
@@ -134,17 +145,15 @@ persona = {
 */
 
 function codigoAleatorio() {
-  let numero = Math.round(Math.random() * (99999999 - 10000000) + 10000000);
-
+  //let numero = Math.round(Math.random() * (99999999 - 10000000) + 10000000);
+  let numero = Math.round(Math.random() * (9999 - 1000) + 1000);
+  console.log(`Numero ${numero}`);
   //Con numeros mas pequeños: mas chances para probar el else y la no repetición
   //let numero = Math.round(Math.random() * (1000 - 100) + 100);
 
   if (codigos.indexOf(numero) === -1) {
-    codigos.push(numero);
-    //console.log(codigos);
     return numero;
   } else {
-    console.log("hola");
     codigoAleatorio();
   }
 }
