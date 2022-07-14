@@ -17,3 +17,14 @@ export function cantidadCaracteres(min, max, input) {
     return false;
   }
 }
+
+export function validarUrl(input) {
+  let patron = /^(http|https|ftp)\:\/\/[a-z0-9\.-]+\.[a-z]{2,4}/gi;
+  if (patron.test(input.value.trim())) {
+    input.className = "form-control is-valid";
+    return true;
+  } else {
+    input.className = "form-control is-invalid";
+    return false;
+  }
+}
