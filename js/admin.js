@@ -1,5 +1,9 @@
 import { Serie } from "./serieClass.js";
-import { campoRequerido } from "./validaciones.js";
+import {
+  campoRequerido,
+  cantidadCaracteres,
+  validarUrl,
+} from "./validaciones.js";
 
 // Traemos los elementos del formulario
 let codigo = document.getElementById("codigo");
@@ -15,12 +19,36 @@ let btnCrearSerie = document.getElementById("btnCrearSerie");
 
 // Si hay algo en LocalStorage, traer esos datos. Si no hay nada, listaSeries tiene que ser una []
 let listaSeries = JSON.parse(localStorage.getItem("listaSeriesKey")) || [];
+let codigos = JSON.parse(localStorage.getItem("listaCodigos")) || [];
 
 // Agregar validaciones
+btnCrearSerie.addEventListener("click", () => {
+  codigo.placeholder = codigoAleatorio();
+});
+
+titulo.addEventListener("blur", () => {
+  campoRequerido(titulo);
+});
+
+titulo.addEventListener("change", () => {
+  cantidadCaracteres(2, 20, titulo);
+});
+
+descripcion.addEventListener("blur", () => {
+  cantidadCaracteres(10, 200, descripcion);
+});
+
+imagen.addEventListener("blur", () => {
+  validarUrl(imagen);
+});
+
+genero.addEventListener("blur", () => {
+  campoRequerido(genero);
+});
 
 formulario.addEventListener("submit", crearSerie);
 btnCrearSerie.addEventListener("click", () => {
-  limpiarFormulario();
+  // limpiarFormulario();
   modalAdminSerie.show();
 });
 
@@ -30,19 +58,23 @@ function crearSerie(e) {
   e.preventDefault();
   // Volver a validar todos los campos y si son correctos, crear la serie
   let nuevaSerie = new Serie(
-    codigo.value,
+    (codigo.value = codigo.placeholder),
     titulo.value,
     descripcion.value,
     imagen.value,
     genero.value
   );
+  console.log(`codigo ${codigo.value}`);
+  codigos.push(codigo.value);
   // Agregamos la serie al final del arreglo
   listaSeries.push(nuevaSerie);
   console.log(listaSeries);
   // Limpiar el formulario
-  limpiarFormulario();
+  // limpiarFormulario();
   // Guardar la lista de series
   guardarListaSeries();
+  // Guardar la lista de codigos
+  guardarListaCodigos();
   // Cerrar modal que administra series
   modalAdminSerie.hide();
   // Mostrar cartel al usuario
@@ -55,12 +87,20 @@ function crearSerie(e) {
   crearFila();
 }
 
-function limpiarFormulario() {
-  formulario.reset();
-}
+// function limpiarFormulario() {
+//   console.log(formulario);
+//   formulario.reset();
+//   // Quitar la clase validate a los input
+//   for (let input = 0; input <= 6; input++)
+//     formulario.children[input].children[1].className = "form-control";
+// }
 
 function guardarListaSeries() {
   localStorage.setItem("listaSeriesKey", JSON.stringify(listaSeries));
+}
+
+function guardarListaCodigos() {
+  localStorage.setItem("listaCodigos", JSON.stringify(codigos));
 }
 
 function cargaInicial() {
@@ -113,3 +153,17 @@ persona = {
   apellido: "asdadasd",
 };
 */
+
+function codigoAleatorio() {
+  //let numero = Math.round(Math.random() * (99999999 - 10000000) + 10000000);
+  let numero = Math.round(Math.random() * (9999 - 1000) + 1000);
+  console.log(`Numero ${numero}`);
+  //Con numeros mas pequeños: mas chances para probar el else y la no repetición
+  //let numero = Math.round(Math.random() * (1000 - 100) + 100);
+
+  if (codigos.indexOf(numero) === -1) {
+    return numero;
+  } else {
+    codigoAleatorio();
+  }
+}
