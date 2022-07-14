@@ -51,6 +51,8 @@ function crearSerie(e) {
     "La serie cargada se creó correctamente",
     "success" // Icono. Podria poner una imagen tambien
   );
+
+  crearFila();
 }
 
 function limpiarFormulario() {
