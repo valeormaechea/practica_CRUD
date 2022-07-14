@@ -39,12 +39,16 @@ descripcion.addEventListener("blur", () => {
 });
 
 imagen.addEventListener("blur", () => {
-  validarUrl(imagen, 1, 0);
+  validarUrl(imagen);
+});
+
+genero.addEventListener("blur", () => {
+  campoRequerido(genero);
 });
 
 formulario.addEventListener("submit", crearSerie);
 btnCrearSerie.addEventListener("click", () => {
-  limpiarFormulario();
+  // limpiarFormulario();
   modalAdminSerie.show();
 });
 
@@ -66,10 +70,10 @@ function crearSerie(e) {
   listaSeries.push(nuevaSerie);
   console.log(listaSeries);
   // Limpiar el formulario
-  limpiarFormulario();
+  // limpiarFormulario();
   // Guardar la lista de series
   guardarListaSeries();
-  // Guardar la lista de series
+  // Guardar la lista de codigos
   guardarListaCodigos();
   // Cerrar modal que administra series
   modalAdminSerie.hide();
@@ -81,9 +85,13 @@ function crearSerie(e) {
   );
 }
 
-function limpiarFormulario() {
-  formulario.reset();
-}
+// function limpiarFormulario() {
+//   console.log(formulario);
+//   formulario.reset();
+//   // Quitar la clase validate a los input
+//   for (let input = 0; input <= 6; input++)
+//     formulario.children[input].children[1].className = "form-control";
+// }
 
 function guardarListaSeries() {
   localStorage.setItem("listaSeriesKey", JSON.stringify(listaSeries));
