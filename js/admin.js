@@ -133,7 +133,7 @@ function crearFila(itemSerie) {
     <button class="btn btn-warning btn-sm">
       <i class="bi bi-pencil-square"></i>
     </button>
-    <button class="btn btn-danger btn-sm">
+    <button class="btn btn-danger btn-sm" onclick="borrarProducto('${itemSerie.codigo}')">
       <i class="bi bi-trash3-fill"></i>
     </button>
   </td>
@@ -167,3 +167,28 @@ function codigoAleatorio() {
     codigoAleatorio();
   }
 }
+
+window.borrarProducto = function (codigo) {
+  console.log("desde borrar" + codigo);
+  // Preguntar al usuario si estoy segura de borrar
+  Swal.fire({
+    title: "Estas seguro de borrar la serie?",
+    text: "No se puede revertir este paso",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Eliminar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    // Borrar la serie listaSeries y tambien del localStorage
+
+  // Actualizar la tabla
+
+  // Mostrar cartel de operacion exitosa
+    if (result.isConfirmed) {
+      Swal.fire("Serie eliminada", "La serie fue eliminada.", "success");
+    }
+  });
+
+};
