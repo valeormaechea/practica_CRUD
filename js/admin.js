@@ -84,7 +84,7 @@ function crearSerie(e) {
     "success" // Icono. Podria poner una imagen tambien
   );
 
-  crearFila();
+  crearFila(nuevaSerie);
 }
 
 // function limpiarFormulario() {
