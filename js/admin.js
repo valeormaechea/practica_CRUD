@@ -181,14 +181,31 @@ window.borrarProducto = function (codigo) {
     confirmButtonText: "Eliminar",
     cancelButtonText: "Cancelar",
   }).then((result) => {
-    // Borrar la serie listaSeries y tambien del localStorage
-
-  // Actualizar la tabla
-
-  // Mostrar cartel de operacion exitosa
     if (result.isConfirmed) {
+      // Borrar la serie listaSeries y tambien del localStorage
+      let listaSeriesNueva = listaSeries.filter((serie) => {
+        return serie.codigo != codigo;
+      });
+      let listaCodigosNueva = codigos.filter((listaCodigo) => {
+        return listaCodigo != codigo;
+      });
+      console.log(listaCodigosNueva);
+      listaSeries = listaSeriesNueva;
+      guardarListaSeries();
+      codigos = listaCodigosNueva;
+      guardarListaCodigos();
+
+      // Actualizar la tabla
+      borrarTabla();
+      cargaInicial();
+
+      // Mostrar cartel de operacion exitosa
       Swal.fire("Serie eliminada", "La serie fue eliminada.", "success");
     }
   });
-
 };
+
+function borrarTabla() {
+  let tbodySeries = document.querySelector("#listaSeries");
+  tbodySeries.innerHTML = "";
+}
