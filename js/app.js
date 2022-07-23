@@ -24,7 +24,8 @@ function crearColumna(serie) {
 }
 
 window.verDetalle = (codigo) => {
-    console.log(codigo);
-    console.log(window.location.origin+`/pages/detalle.html`);
-    window.location.href = window.location.origin+`/pages/detalle.html`;
+  console.log(codigo);
+  console.log(window.location.origin + `/pages/detalle.html?codigo=${codigo}`);
+  window.location.href =
+    window.location.origin + `/pages/detalle.html?codigo=${codigo}`;
 };
