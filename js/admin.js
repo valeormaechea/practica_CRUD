@@ -17,6 +17,9 @@ const modalAdminSerie = new bootstrap.Modal(
 );
 let btnCrearSerie = document.getElementById("btnCrearSerie");
 
+// Variable para manejar el create y el update
+let serieExistente = false; // si serieExiste es false la serie es Nueva, si es true ya existe deberia modificar
+
 // Si hay algo en LocalStorage, traer esos datos. Si no hay nada, listaSeries tiene que ser una []
 let listaSeries = JSON.parse(localStorage.getItem("listaSeriesKey")) || [];
 let codigos = JSON.parse(localStorage.getItem("listaCodigos")) || [];
@@ -46,13 +49,29 @@ genero.addEventListener("blur", () => {
   campoRequerido(genero);
 });
 
-formulario.addEventListener("submit", crearSerie);
+formulario.addEventListener("submit", guardarSerie);
 btnCrearSerie.addEventListener("click", () => {
   // limpiarFormulario();
+  serieExistente = false;
   modalAdminSerie.show();
 });
 
 cargaInicial();
+
+function guardarSerie(e) {
+  e.preventDefault();
+  // if(true)
+  if (serieExistente) {
+    //aqui quiero modificar una serie existente
+    console.log("aqui quiero modificar");
+    //validar los datos
+    //guardar la actualizacion
+    guardarEdicionSerie();
+  } else {
+    //aqui quiero crear una nueva serie
+    crearSerie();
+  }
+}
 
 function crearSerie(e) {
   e.preventDefault();
@@ -130,7 +149,7 @@ function crearFila(itemSerie) {
   </td>
   <td>${itemSerie.genero}</td>
   <td>
-    <button class="btn btn-warning btn-sm">
+    <button class="btn btn-warning btn-sm" onclick='preparEdicionSerie("${itemSerie.codigo}")'>
       <i class="bi bi-pencil-square"></i>
     </button>
     <button class="btn btn-danger btn-sm" onclick="borrarProducto('${itemSerie.codigo}')">
@@ -208,4 +227,49 @@ window.borrarProducto = function (codigo) {
 function borrarTabla() {
   let tbodySeries = document.querySelector("#listaSeries");
   tbodySeries.innerHTML = "";
+}
+
+window.preparEdicionSerie = function (codigoP) {
+  console.log(codigoP);
+  //cargar los datos de la serie a editar
+  let serieBuscada = listaSeries.find((serie) => {
+    return serie.codigo == codigoP;
+  });
+  console.log(serieBuscada.codigo);
+  //asignar los valores a cada input
+  codigo.value = serieBuscada.codigo;
+  titulo.value = serieBuscada.titulo;
+  descripcion.value = serieBuscada.descripcion;
+  imagen.value = serieBuscada.imagen;
+  genero.value = serieBuscada.genero;
+  //mostrar formulario de la ventana modal
+  modalAdminSerie.show();
+  // aqui modifico la variable existeSerie para poder editar
+  serieExistente = true;
+  console.log(serieExistente);
+};
+
+function guardarEdicionSerie() {
+  //necesitamos la posicion de la serie dentro del arreglo
+  let posicionSerie = listaSeries.findIndex((serie) => {
+    return serie.codigo == codigo.value;
+  });
+  //modificamos los valores de la serie encontrada
+  listaSeries[posicionSerie].titulo = titulo.value;
+  listaSeries[posicionSerie].descripcion = descripcion.value;
+  listaSeries[posicionSerie].imagen = imagen.value;
+  listaSeries[posicionSerie].genero = genero.value;
+  //actualizar el localstorage
+  guardarListaSeries();
+  //actualizar la tabla
+  borrarTabla();
+  cargasInicial();
+  //indicar al usuario si se pudo realizar la accion
+  Swal.fire(
+    "Serie actualizada",
+    "La serie seleccionada fue correctamente actualizada",
+    "success"
+  );
+  //cerrar la ventana modal
+  modalAdminSerie.hide();
 }
